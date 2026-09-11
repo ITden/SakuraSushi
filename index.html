@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@500;600;800&display=swap" rel="stylesheet">
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         :root {
             --ink: #17110f;
@@ -310,7 +312,13 @@
                 <div id="user-info" style="font-size:0.9rem; margin-bottom:10px; color:#555;">Статус: Не вошел</div>
                 <input type="tel" id="user-phone-input" class="form-inp" placeholder="Ваш номер телефона">
                 <button class="btn-sec" onclick="registerPhone()">Зарегистрироваться по номеру</button>
-                <button class="btn-sec" style="background:#4285F4; margin-top:8px;" onclick="registerGoogle()">Войти через Google</button>
+                
+                <!-- Официальная кнопка Google Auth -->
+                <div id="g_id_onload"
+                     data-client_id="ВАШ_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                     data-callback="handleCredentialResponse">
+                </div>
+                <div class="g_id_signin" data-type="standard" style="margin-top:10px;"></div>
             </div>
 
             <div style="background:#fff; padding:15px; border-radius:6px; border:1px solid #ddd;">
@@ -471,14 +479,21 @@
             currentUser = phone;
             localStorage.setItem('sakura_user', currentUser);
             updateUserUI();
-            alert('Вы успешно зарегистрировались!');
+            alert('Вы успешно зарегистерировались!');
         }
 
-        function registerGoogle() {
-            currentUser = 'GoogleUser_' + Math.floor(1000 + Math.random() * 9000);
+        /* Колбэк реальной Google авторизации */
+        function handleCredentialResponse(response) {
+            const base64Url = response.credential.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            const userData = JSON.parse(jsonPayload);
+            currentUser = userData.name + ' (' + userData.email + ')';
             localStorage.setItem('sakura_user', currentUser);
             updateUserUI();
-            alert('Вход через Google выполнен успешно!');
         }
 
         function updateUserUI() {

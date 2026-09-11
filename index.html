@@ -4,16 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sakura Sushi — Доставка суши и роллов</title>
-    
-    <!-- Подключение шрифтов Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@500;600;800&display=swap" rel="stylesheet">
-    
     <style>
-        /* ==========================================================================
-           1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СБРОС СТИЛЕЙ
-           ========================================================================== */
         :root {
             --ink: #17110f;
             --paper: #faf8ef;
@@ -21,461 +15,246 @@
             --dark-2: #221515;
             --red: #e3241c;
             --red-deep: #7c1a14;
-            --line: rgba(250, 248, 239, 0.14);
-            --line-dark: rgba(23, 17, 15, 0.12);
-            --bg-card: #ffffff;
-            --text-muted: #666666;
-            --success: #25D366;
+            --line: rgba(250,248,239,0.14);
+            --line-dark: rgba(23,17,15,0.12);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body {
-            background-color: var(--paper);
+            background: var(--paper);
             color: var(--ink);
             font-family: 'Noto Sans JP', sans-serif;
             line-height: 1.7;
             overflow-x: hidden;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
         }
 
-        h1, h2, h3, h4, .brand {
+        h1, h2, h3, .brand {
             font-family: 'Shippori Mincho', serif;
             font-weight: 600;
             letter-spacing: 0.03em;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+        button, input, select, textarea { font-family: inherit; outline: none; }
+        button { cursor: pointer; border: none; }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
 
-        button, input, select, textarea {
-            font-family: inherit;
-            outline: none;
-        }
-
-        button {
-            cursor: pointer;
-            border: none;
-        }
-
-        .wrap {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* ==========================================================================
-           2. ШАПКА САЙТА (HEADER)
-           ========================================================================== */
+        /* Header */
         header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 60;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 60;
             background: rgba(24, 17, 17, 0.94);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(6px);
             border-bottom: 1px solid var(--line);
         }
 
         nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            max-width: 1120px;
-            margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px; max-width: 1120px; margin: 0 auto;
         }
 
-        .brand {
-            color: var(--paper);
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .brand { color: var(--paper); font-size: 1.35rem; }
+        .brand span { color: var(--red); }
 
-        .brand span {
-            color: var(--red);
+        .settings-btn {
+            background: transparent; color: var(--paper);
+            border: 1px solid var(--line); padding: 8px 14px;
+            border-radius: 20px; font-size: 0.85rem; opacity: 0.9;
+            transition: 0.2s;
         }
+        .settings-btn:hover { opacity: 1; background: rgba(255,255,255,0.1); }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 14px;
+        /* Floating Cart & Support Buttons */
+        .floating-cart {
+            position: fixed; bottom: 25px; right: 25px; z-index: 90;
+            background: var(--red); color: var(--paper);
+            padding: 14px 22px; border-radius: 50px; font-size: 1rem;
+            display: flex; align-items: center; gap: 10px; font-weight: 700;
+            box-shadow: 0 6px 20px rgba(227, 36, 28, 0.4);
+            transition: transform 0.2s;
         }
-
-        .cart-btn {
-            background: var(--red);
-            color: var(--paper);
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            transition: background 0.2s;
-        }
-
-        .cart-btn:hover {
-            background: var(--red-deep);
-        }
+        .floating-cart:hover { transform: scale(1.05); }
 
         .cart-count {
-            background: var(--paper);
-            color: var(--red);
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 700;
+            background: var(--paper); color: var(--red);
+            border-radius: 50%; width: 22px; height: 22px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 800;
         }
 
-        .admin-toggle-btn {
-            background: transparent;
-            color: var(--paper);
-            border: 1px solid var(--line);
-            padding: 8px 14px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            opacity: 0.8;
-            transition: opacity 0.2s;
+        .floating-support {
+            position: fixed; bottom: 25px; left: 25px; z-index: 90;
+            background: #25D366; color: #fff;
+            padding: 12px 18px; border-radius: 50px; font-size: 0.85rem;
+            display: flex; align-items: center; gap: 8px; font-weight: 600;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
         }
 
-        .admin-toggle-btn:hover {
-            opacity: 1;
-        }
-
-        /* ==========================================================================
-           3. ГЛАВНЫЙ БАННЕР (HERO SECTION)
-           ========================================================================== */
+        /* Hero */
         .hero {
-            background: linear-gradient(180deg, var(--dark), var(--dark-2) 85%);
-            color: var(--paper);
-            padding: 140px 0 70px;
+            background: linear-gradient(180deg, var(--dark), var(--dark-2) 75%);
+            color: var(--paper); padding: 120px 0 60px;
             text-align: center;
         }
 
-        .hero h1 {
-            font-size: 2.8rem;
-            margin-bottom: 12px;
-            color: var(--paper);
-        }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--paper); }
+        .hero p { color: rgba(250,248,239,0.7); font-size: 1rem; max-width: 600px; margin: 0 auto; }
 
-        .hero p {
-            color: rgba(250, 248, 239, 0.75);
-            font-size: 1.05rem;
-            max-width: 620px;
-            margin: 0 auto;
-        }
-
-        /* ==========================================================================
-           4. КАТЕГОРИИ И КАТАЛОГ (MENU & CATEGORIES)
-           ========================================================================== */
+        /* Categories */
         .categories {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 35px;
+            display: flex; gap: 10px; justify-content: center;
+            flex-wrap: wrap; margin-bottom: 30px;
         }
 
         .cat-btn {
-            padding: 10px 20px;
-            background: #e8e5d8;
-            border-radius: 25px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            color: var(--ink);
+            padding: 8px 16px; background: #e8e5d8;
+            border-radius: 20px; font-size: 0.9rem; font-weight: 500;
+            transition: 0.2s;
         }
 
         .cat-btn.active, .cat-btn:hover {
-            background: var(--red);
-            color: #ffffff;
+            background: var(--red); color: white;
         }
 
-        section {
-            padding: 50px 0;
-        }
-
-        .sec-title {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            text-align: center;
-        }
+        /* Section & Grid */
+        section { padding: 40px 0; }
+        .sec-title { font-size: 1.8rem; margin-bottom: 25px; text-align: center; }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 28px;
+            gap: 24px;
         }
 
         .card {
-            background: var(--bg-card);
-            border: 1px solid var(--line-dark);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            transition: transform 0.25s, box-shadow 0.25s;
+            background: #fff; border: 1px solid var(--line-dark);
+            border-radius: 6px; overflow: hidden; display: flex;
+            flex-direction: column; justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: transform 0.2s;
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: #f0f0f0;
-        }
-
-        .card-body {
-            padding: 18px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-title {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .card-desc {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-            flex: 1;
-        }
-
-        .card-bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: auto;
-        }
-
-        .card-price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--red-deep);
-        }
+        .card:hover { transform: translateY(-3px); }
+        .card-img { width: 100%; height: 190px; object-fit: cover; background: #eee; }
+        .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+        .card-desc { font-size: 0.85rem; color: #666; margin-bottom: 14px; flex: 1; }
+        .card-bottom { display: flex; align-items: center; justify-content: space-between; }
+        .card-price { font-size: 1.15rem; font-weight: 700; color: var(--red-deep); }
 
         .btn-add {
-            background: var(--ink);
-            color: var(--paper);
-            padding: 9px 18px;
-            font-size: 0.88rem;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: background 0.2s;
+            background: var(--ink); color: var(--paper);
+            padding: 8px 16px; font-size: 0.85rem; border-radius: 4px;
+            font-weight: 500; transition: 0.2s;
         }
+        .btn-add:hover { background: var(--red); }
 
-        .btn-add:hover {
-            background: var(--red);
-        }
-
-        /* ==========================================================================
-           5. ВЫДВИЖНАЯ КОРЗИНА (DRAWER CART)
-           ========================================================================== */
+        /* Drawer / Modal */
         .drawer {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: 100;
-            display: none;
-            justify-content: flex-end;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 100; display: none; justify-content: flex-end;
         }
-
-        .drawer.open {
-            display: flex;
-        }
+        .drawer.open { display: flex; }
 
         .drawer-box {
-            background: var(--paper);
-            width: 100%;
-            max-width: 450px;
-            height: 100%;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
+            background: var(--paper); width: 100%; max-width: 440px;
+            height: 100%; padding: 24px; display: flex;
+            flex-direction: column; overflow-y: auto;
         }
 
         .drawer-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--line-dark);
-            padding-bottom: 16px;
-            margin-bottom: 22px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--line-dark); padding-bottom: 14px; margin-bottom: 20px;
         }
 
-        .close-btn {
-            background: none;
-            font-size: 1.8rem;
-            line-height: 1;
-            color: var(--ink);
-        }
+        .close-btn { background: none; font-size: 1.6rem; line-height: 1; color: var(--ink); }
 
-        .cart-list {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
+        .cart-list { flex: 1; overflow-y: auto; margin-bottom: 20px; }
         .cart-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--line-dark);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px solid var(--line-dark);
         }
 
-        .qty-cnt {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
+        .qty-cnt { display: flex; align-items: center; gap: 8px; }
         .qty-btn {
-            background: #e2dfd2;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #e0e0e0; width: 26px; height: 26px;
+            border-radius: 50%; font-weight: bold; display: flex;
+            align-items: center; justify-content: center;
         }
 
         .form-inp {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 0.92rem;
-            background: #ffffff;
+            width: 100%; padding: 10px; margin-bottom: 12px;
+            border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;
+            background: #fff;
         }
 
         .btn-send {
-            background: var(--success);
-            color: #ffffff;
-            width: 100%;
-            padding: 14px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            border-radius: 4px;
-            margin-top: 10px;
-            transition: background 0.2s;
+            background: #25D366; color: white; width: 100%;
+            padding: 13px; font-weight: 700; font-size: 1rem;
+            border-radius: 4px; margin-top: 10px; transition: 0.2s;
+        }
+        .btn-send:hover { background: #1ebc57; }
+
+        .btn-sec {
+            background: var(--ink); color: white; width: 100%;
+            padding: 10px; font-weight: 600; font-size: 0.9rem;
+            border-radius: 4px; margin-top: 5px;
         }
 
-        .btn-send:hover {
-            background: #1ebc57;
+        /* Modal Settings */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            z-index: 100; display: none; align-items: center; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal-card {
+            background: var(--paper); width: 90%; max-width: 480px;
+            border-radius: 6px; padding: 24px; max-height: 90vh; overflow-y: auto;
         }
 
-        /* ==========================================================================
-           6. ПАНЕЛЬ АДМИНИСТРАТОРА (ADMIN PANEL)
-           ========================================================================== */
+        /* Admin Panel Items */
         .admin-panel {
-            background: #ffffff;
-            border: 1px solid var(--line-dark);
-            padding: 28px;
-            margin-top: 60px;
-            border-radius: 8px;
-            display: none;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+            background: #fff; border: 1px solid var(--line-dark);
+            padding: 20px; margin-top: 20px; border-radius: 6px; display: none;
         }
-
-        .admin-panel.open {
-            display: block;
-        }
+        .admin-panel.open { display: block; }
 
         .admin-item-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--line-dark);
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid var(--line-dark);
         }
 
         .admin-item-thumb {
-            width: 48px;
-            height: 48px;
-            border-radius: 4px;
-            object-fit: cover;
-            background: #eeeeee;
+            width: 44px; height: 44px; border-radius: 3px;
+            object-fit: cover; background: #ddd;
         }
 
-        .admin-item-name {
-            flex: 1;
-            font-size: 0.95rem;
-        }
-
-        .admin-item-price {
-            width: 90px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+        .admin-item-name { flex: 1; font-size: 0.9rem; }
+        .admin-item-price { width: 85px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <!-- Шапка -->
     <header>
         <nav>
-            <a href="#" class="brand">🌸 Сакура<span>Суши</span></a>
-            <div class="nav-right">
-                <button class="admin-toggle-btn" onclick="toggleAdmin()">⚙️ Панель</button>
-                <button class="cart-btn" onclick="toggleCart()">
-                    🛒 Корзина <span class="cart-count" id="cart-count">0</span>
-                </button>
-            </div>
+            <a href="#" class="brand">🌸 Sakura <span>Sushi</span></a>
+            <button class="settings-btn" onclick="openSettings()">⚙️ Настройки</button>
         </nav>
     </header>
 
-    <!-- Баннер -->
     <div class="hero">
         <div class="wrap">
-            <h1>Традиционные Суши и Роллы</h1>
-            <p>Свежие ингредиенты, авторские рецепты и быстрая доставка по городу.</p>
+            <h1>Sakura Sushi</h1>
+            <p>Свежие ингредиенты, авторские рецепты и быстрая доставка.</p>
         </div>
     </div>
 
-    <!-- Основной контент -->
     <section>
         <div class="wrap">
-            
-            <!-- Фильтр по категориям -->
             <div class="categories">
                 <button class="cat-btn active" onclick="filterCategory('all', this)">Все</button>
                 <button class="cat-btn" onclick="filterCategory('rolls', this)">Роллы</button>
@@ -485,35 +264,20 @@
             </div>
 
             <h2 class="sec-title" id="sec-title">Всё меню</h2>
-            
-            <!-- Сетка товаров -->
             <div class="grid" id="menu-grid"></div>
-
-            <!-- Админ Панель -->
-            <div class="admin-panel" id="admin-panel">
-                <h3>Управление ассортиментом</h3>
-                <p style="color: var(--text-muted); font-size:0.9rem; margin-bottom: 20px;">Изменяйте цены, удаляйте позиции или добавляйте новые карточки.</p>
-                
-                <div id="admin-items-list"></div>
-                
-                <h4 style="margin-top: 30px; margin-bottom: 12px;">Добавить новый товар</h4>
-                <input type="text" id="new-name" class="form-inp" placeholder="Название товара">
-                <input type="text" id="new-desc" class="form-inp" placeholder="Состав / Описание">
-                <input type="number" id="new-price" class="form-inp" placeholder="Цена (сом)">
-                <select id="new-cat" class="form-inp">
-                    <option value="rolls">Роллы</option>
-                    <option value="sets">Сеты</option>
-                    <option value="sushi">Суши</option>
-                    <option value="drinks">Напитки</option>
-                </select>
-                <input type="text" id="new-img" class="form-inp" placeholder="Ссылка на фото (URL)">
-                <button class="btn-add" style="width: 100%; padding: 13px; margin-top: 5px;" onclick="addNewItem()">Сохранить товар</button>
-            </div>
-
         </div>
     </section>
 
-    <!-- Корзина (Drawer) -->
+    <!-- Floating UI -->
+    <button class="floating-cart" onclick="toggleCart()">
+        🛒 Корзина <span class="cart-count" id="cart-count">0</span>
+    </button>
+
+    <a href="https://wa.me/996775049798" target="_blank" class="floating-support">
+        📞 Поддержка: +996775049798
+    </a>
+
+    <!-- Cart Drawer -->
     <div class="drawer" id="cart-drawer">
         <div class="drawer-box">
             <div class="drawer-head">
@@ -523,35 +287,72 @@
 
             <div class="cart-list" id="cart-list"></div>
 
-            <div style="font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 20px;" id="cart-total">
+            <div style="font-weight:bold; font-size:1.15rem; text-align:right; margin-bottom:15px;" id="cart-total">
                 Итого: 0 сом
             </div>
 
-            <input type="text" id="order-name" class="form-inp" placeholder="Ваше имя">
-            <input type="tel" id="order-phone" class="form-inp" placeholder="Номер телефона">
             <input type="text" id="order-address" class="form-inp" placeholder="Адрес доставки">
 
             <button class="btn-send" onclick="sendOrder()">Отправить заказ в WhatsApp</button>
         </div>
     </div>
 
-    <!-- ==========================================================================
-       7. JAVASCRIPT ЛОГИКА
-       ========================================================================== -->
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3>Настройки</h3>
+                <button class="close-btn" onclick="closeSettings()">&times;</button>
+            </div>
+
+            <div style="background:#fff; padding:15px; border-radius:6px; border:1px solid #ddd; margin-bottom:20px;">
+                <h4 style="margin-bottom:10px;">Регистрация / Профиль</h4>
+                <div id="user-info" style="font-size:0.9rem; margin-bottom:10px; color:#555;">Статус: Не вошел</div>
+                <input type="tel" id="user-phone-input" class="form-inp" placeholder="Ваш номер телефона">
+                <button class="btn-sec" onclick="registerPhone()">Зарегистрироваться по номеру</button>
+                <button class="btn-sec" style="background:#4285F4; margin-top:8px;" onclick="registerGoogle()">Войти через Google</button>
+            </div>
+
+            <div style="background:#fff; padding:15px; border-radius:6px; border:1px solid #ddd;">
+                <h4 style="margin-bottom:10px;">Админ-панель</h4>
+                <div id="admin-auth-form">
+                    <input type="text" id="admin-login" class="form-inp" placeholder="Логин">
+                    <input type="password" id="admin-pass" class="form-inp" placeholder="Пароль">
+                    <button class="btn-sec" onclick="loginAdmin()">Войти в Админку</button>
+                </div>
+
+                <div class="admin-panel" id="admin-panel">
+                    <h4>Управление меню</h4>
+                    <div id="admin-items-list" style="max-height:200px; overflow-y:auto; margin:10px 0;"></div>
+                    
+                    <h5 style="margin:15px 0 8px;">Добавить новый товар</h5>
+                    <input type="text" id="new-name" class="form-inp" placeholder="Название товара">
+                    <input type="text" id="new-desc" class="form-inp" placeholder="Состав / Описание">
+                    <input type="number" id="new-price" class="form-inp" placeholder="Цена (сом)">
+                    <select id="new-cat" class="form-inp">
+                        <option value="rolls">Роллы</option>
+                        <option value="sets">Сеты</option>
+                        <option value="sushi">Суши</option>
+                        <option value="drinks">Напитки</option>
+                    </select>
+                    <input type="text" id="new-img" class="form-inp" placeholder="Ссылка на фото (URL)">
+                    <button class="btn-add" style="width:100%; padding:11px;" onclick="addNewItem()">Сохранить товар</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Данные меню по умолчанию
         const defaultMenu = [
-            { id: 1, cat: "rolls", name: "Филадельфия Классик", desc: "Лосось, сливочный сыр, огурец, нори, рис", price: 450, img: "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400" },
+            { id: 1, cat: "rolls", name: "Филадельфия Классик", desc: "Лосось, сливочный сыр, огурец, нори", price: 450, img: "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400" },
             { id: 2, cat: "rolls", name: "Калифорния с крабом", desc: "Снежный краб, авокадо, огурец, икра тобико", price: 390, img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" },
-            { id: 3, cat: "rolls", name: "Запеченный с угрём", desc: "Угорь, сыр, унаги соус, белый кунжут", price: 480, img: "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400" },
-            { id: 4, cat: "sets", name: "Сет Сакура", desc: "Филадельфия, Калифорния, Дракон (24 штуки)", price: 1250, img: "https://images.unsplash.com/photo-1615361200141-f45040f367be?w=400" },
-            { id: 5, cat: "sushi", name: "Суши с лососем", desc: "Свежий лосось, рис, васаби", price: 120, img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400" },
-            { id: 6, cat: "drinks", name: "Зеленый чай 0.5l", desc: "Холодный японский зеленый чай", price: 100, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400" }
+            { id: 3, cat: "rolls", name: "Запеченный с угрём", desc: "Угорь, сыр, унаги соус, кунжут", price: 480, img: "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400" },
+            { id: 4, cat: "sets", name: "Сет Сакура", desc: "Филадельфия, Калифорния, Дракон (24 шт)", price: 1250, img: "https://images.unsplash.com/photo-1615361200141-f45040f367be?w=400" },
+            { id: 5, cat: "sushi", name: "Суши с лососем", desc: "Свежий лосось, рис, васаби", price: 120, img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400" }
         ];
 
         let currentCategory = 'all';
 
-        // Получение данных из LocalStorage
         function getMenu() {
             try {
                 const data = localStorage.getItem('sakura_menu');
@@ -561,19 +362,18 @@
             }
         }
 
-        // Сохранение данных в LocalStorage
         function saveMenu(menu) {
             try {
                 localStorage.setItem('sakura_menu', JSON.stringify(menu));
             } catch(e) {
-                alert('Не удалось сохранить изменения!');
+                alert('Ошибка сохранения');
             }
         }
 
         let menu = getMenu();
         let cart = {};
+        let currentUser = localStorage.getItem('sakura_user') || null;
 
-        // Отрисовка каталога
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             const filtered = currentCategory === 'all' 
@@ -581,7 +381,7 @@
                 : menu.filter(item => item.cat === currentCategory);
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#888; padding: 40px 0;">В этой категории пока нет товаров.</p>';
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#888;">В этой категории пока нет товаров.</p>';
                 return;
             }
 
@@ -600,7 +400,6 @@
             `).join('');
         }
 
-        // Фильтрация категорий
         function filterCategory(cat, btn) {
             currentCategory = cat;
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -608,13 +407,11 @@
             renderMenu();
         }
 
-        // Добавление в корзину
         function addToCart(id) {
             cart[id] = (cart[id] || 0) + 1;
             updateCart();
         }
 
-        // Изменение количества в корзине
         function changeQty(id, delta) {
             if (cart[id]) {
                 cart[id] += delta;
@@ -623,13 +420,12 @@
             updateCart();
         }
 
-        // Обновление состояния корзины
         function updateCart() {
             const count = Object.values(cart).reduce((a, b) => a + b, 0);
             document.getElementById('cart-count').innerText = count;
 
             const list = document.getElementById('cart-list');
-              let total = 0;
+            let total = 0;
 
             const itemsHtml = Object.keys(cart).map(id => {
                 const item = menu.find(m => m.id == id);
@@ -640,7 +436,7 @@
                     <div class="cart-row">
                         <div>
                             <div><strong>${item.name}</strong></div>
-                            <small style="color:var(--text-muted);">${item.price} x ${cart[id]} = ${sum} сом</small>
+                            <small>${item.price} x ${cart[id]} = ${sum} сом</small>
                         </div>
                         <div class="qty-cnt">
                             <button class="qty-btn" onclick="changeQty(${id}, -1)">-</button>
@@ -651,23 +447,64 @@
                 `;
             }).join('');
 
-            list.innerHTML = itemsHtml || '<p style="color:#777; text-align:center; padding:20px 0;">Корзина пуста</p>';
+            list.innerHTML = itemsHtml || '<p style="color:#777; text-align:center;">Корзина пуста</p>';
             document.getElementById('cart-total').innerText = `Итого: ${total} сом`;
         }
 
-        // Открытие / Закрытие корзины
         function toggleCart() {
             document.getElementById('cart-drawer').classList.toggle('open');
         }
 
-        // Открытие / Закрытие админки
-        function toggleAdmin() {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.toggle('open');
-            if (panel.classList.contains('open')) renderAdminList();
+        /* Settings & Auth */
+        function openSettings() {
+            document.getElementById('settings-modal').classList.add('open');
+            updateUserUI();
         }
 
-        // Отрисовка списка в админке
+        function closeSettings() {
+            document.getElementById('settings-modal').classList.remove('open');
+        }
+
+        function registerPhone() {
+            const phone = document.getElementById('user-phone-input').value.trim();
+            if (!phone) return alert('Введите номер телефона!');
+            currentUser = phone;
+            localStorage.setItem('sakura_user', currentUser);
+            updateUserUI();
+            alert('Вы успешно зарегистрировались!');
+        }
+
+        function registerGoogle() {
+            currentUser = 'GoogleUser_' + Math.floor(1000 + Math.random() * 9000);
+            localStorage.setItem('sakura_user', currentUser);
+            updateUserUI();
+            alert('Вход через Google выполнен успешно!');
+        }
+
+        function updateUserUI() {
+            const el = document.getElementById('user-info');
+            if (currentUser) {
+                el.innerHTML = `Вы вошли как: <strong style="color:green;">${currentUser}</strong>`;
+            } else {
+                el.innerText = 'Статус: Вы не зарегистрированы';
+            }
+        }
+
+        /* Admin Login */
+        function loginAdmin() {
+            const l = document.getElementById('admin-login').value.trim();
+            const p = document.getElementById('admin-pass').value.trim();
+
+            if (l === 'admin' && p === '1234') {
+                document.getElementById('admin-auth-form').style.display = 'none';
+                const panel = document.getElementById('admin-panel');
+                panel.classList.add('open');
+                renderAdminList();
+            } else {
+                alert('Неверный логин или пароль!');
+            }
+        }
+
         function renderAdminList() {
             const list = document.getElementById('admin-items-list');
             list.innerHTML = menu.map(item => `
@@ -682,7 +519,6 @@
             `).join('');
         }
 
-        // Обновление цены
         function updatePrice(id, newPrice) {
             const item = menu.find(m => m.id === id);
             if (item) {
@@ -692,7 +528,6 @@
             }
         }
 
-        // Удаление товара
         function deleteItem(id) {
             menu = menu.filter(m => m.id !== id);
             saveMenu(menu);
@@ -700,7 +535,6 @@
             renderAdminList();
         }
 
-        // Добавление товара
         function addNewItem() {
             const name = document.getElementById('new-name').value.trim();
             const desc = document.getElementById('new-desc').value.trim();
@@ -733,10 +567,14 @@
             document.getElementById('new-img').value = '';
         }
 
-        // Отправка заказа в WhatsApp
+        /* Order */
         function sendOrder() {
-            const name = document.getElementById('order-name').value.trim();
-            const phone = document.getElementById('order-phone').value.trim();
+            if (!currentUser) {
+                alert('Пожалуйста, пройдите регистрацию в Настройках перед оформлением заказа!');
+                openSettings();
+                return;
+            }
+
             const address = document.getElementById('order-address').value.trim();
 
             if (Object.keys(cart).length === 0) {
@@ -744,13 +582,13 @@
                 return;
             }
 
-            if (!name || !phone || !address) {
-                alert('Заполните все поля доставки!');
+            if (!address) {
+                alert('Укажите адрес доставки!');
                 return;
             }
 
             let text = `🌸 *Новый заказ Sakura Sushi*\n\n`;
-            text += `👤 *Имя:* ${name}\n📞 *Тел:* ${phone}\n📍 *Адрес:* ${address}\n\n🍣 *Заказ:*\n`;
+            text += `👤 *Аккаунт:* ${currentUser}\n📍 *Адрес:* ${address}\n\n🍣 *Заказ:*\n`;
 
             let total = 0;
             Object.keys(cart).forEach(id => {
@@ -762,12 +600,14 @@
                 }
             });
 
-            text += `\n💰 *Итого к оплате:* ${total} сом`;
+            text += `\n💰 *Итого:* ${total} сом`;
 
             window.open(`https://wa.me/996775049798?text=${encodeURIComponent(text)}`, '_blank');
+
+            alert('Заказ успешно оформлен!');
+            location.reload();
         }
 
-        // Инициализация при загрузке
         renderMenu();
     </script>
 </body>

@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakura Sushi — Доставка суши и роллов</title>
+    
+    <!-- Подключение шрифтов Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@500;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СБРОС СТИЛЕЙ
+           ========================================================================== */
+        :root {
+            --ink: #17110f;
+            --paper: #faf8ef;
+            --dark: #181111;
+            --dark-2: #221515;
+            --red: #e3241c;
+            --red-deep: #7c1a14;
+            --line: rgba(250, 248, 239, 0.14);
+            --line-dark: rgba(23, 17, 15, 0.12);
+            --bg-card: #ffffff;
+            --text-muted: #666666;
+            --success: #25D366;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        h1, h2, h3, h4, .brand {
+            font-family: 'Shippori Mincho', serif;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+            outline: none;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+        }
+
+        .wrap {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ==========================================================================
+           2. ШАПКА САЙТА (HEADER)
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 60;
+            background: rgba(24, 17, 17, 0.94);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .brand {
+            color: var(--paper);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand span {
+            color: var(--red);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .cart-btn {
+            background: var(--red);
+            color: var(--paper);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+
+        .cart-btn:hover {
+            background: var(--red-deep);
+        }
+
+        .cart-count {
+            background: var(--paper);
+            color: var(--red);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .admin-toggle-btn {
+            background: transparent;
+            color: var(--paper);
+            border: 1px solid var(--line);
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .admin-toggle-btn:hover {
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           3. ГЛАВНЫЙ БАННЕР (HERO SECTION)
+           ========================================================================== */
+        .hero {
+            background: linear-gradient(180deg, var(--dark), var(--dark-2) 85%);
+            color: var(--paper);
+            padding: 140px 0 70px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            color: var(--paper);
+        }
+
+        .hero p {
+            color: rgba(250, 248, 239, 0.75);
+            font-size: 1.05rem;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           4. КАТЕГОРИИ И КАТАЛОГ (MENU & CATEGORIES)
+           ========================================================================== */
+        .categories {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .cat-btn {
+            padding: 10px 20px;
+            background: #e8e5d8;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: var(--ink);
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background: var(--red);
+            color: #ffffff;
+        }
+
+        section {
+            padding: 50px 0;
+        }
+
+        .sec-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 28px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--line-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+
+        .card-body {
+            padding: 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .card-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--red-deep);
+        }
+
+        .btn-add {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 9px 18px;
+            font-size: 0.88rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background: var(--red);
+        }
+
+        /* ==========================================================================
+           5. ВЫДВИЖНАЯ КОРЗИНА (DRAWER CART)
+           ========================================================================== */
+        .drawer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 100;
+            display: none;
+            justify-content: flex-end;
+        }
+
+        .drawer.open {
+            display: flex;
+        }
+
+        .drawer-box {
+            background: var(--paper);
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .drawer-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--line-dark);
+            padding-bottom: 16px;
+            margin-bottom: 22px;
+        }
+
+        .close-btn {
+            background: none;
+            font-size: 1.8rem;
+            line-height: 1;
+            color: var(--ink);
+        }
+
+        .cart-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--line-dark);
+        }
+
+        .qty-cnt {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background: #e2dfd2;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-inp {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.92rem;
+            background: #ffffff;
+        }
+
+        .btn-send {
+            background: var(--success);
+            color: #ffffff;
+            width: 100%;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-radius: 4px;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-send:hover {
+            background: #1ebc57;
+        }
+
+        /* ==========================================================================
+           6. ПАНЕЛЬ АДМИНИСТРАТОРА (ADMIN PANEL)
+           ========================================================================== */
+        .admin-panel {
+            background: #ffffff;
+            border: 1px solid var(--line-dark);
+            padding: 28px;
+            margin-top: 60px;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.06);
+        }
+
+        .admin-panel.open {
+            display: block;
+        }
+
+        .admin-item-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--line-dark);
+        }
+
+        .admin-item-thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: #eeeeee;
+        }
+
+        .admin-item-name {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .admin-item-price {
+            width: 90px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header>
+        <nav>
+            <a href="#" class="brand">🌸 Сакура<span>Суши</span></a>
+            <div class="nav-right">
+                <button class="admin-toggle-btn" onclick="toggleAdmin()">⚙️ Панель</button>
+                <button class="cart-btn" onclick="toggleCart()">
+                    🛒 Корзина <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Баннер -->
+    <div class="hero">
+        <div class="wrap">
+            <h1>Традиционные Суши и Роллы</h1>
+            <p>Свежие ингредиенты, авторские рецепты и быстрая доставка по городу.</p>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <section>
+        <div class="wrap">
+            
+            <!-- Фильтр по категориям -->
+            <div class="categories">
+                <button class="cat-btn active" onclick="filterCategory('all', this)">Все</button>
+                <button class="cat-btn" onclick="filterCategory('rolls', this)">Роллы</button>
+                <button class="cat-btn" onclick="filterCategory('sets', this)">Сеты</button>
+                <button class="cat-btn" onclick="filterCategory('sushi', this)">Суши</button>
+                <button class="cat-btn" onclick="filterCategory('drinks', this)">Напитки</button>
+            </div>
+
+            <h2 class="sec-title" id="sec-title">Всё меню</h2>
+            
+            <!-- Сетка товаров -->
+            <div class="grid" id="menu-grid"></div>
+
+            <!-- Админ Панель -->
+            <div class="admin-panel" id="admin-panel">
+                <h3>Управление ассортиментом</h3>
+                <p style="color: var(--text-muted); font-size:0.9rem; margin-bottom: 20px;">Изменяйте цены, удаляйте позиции или добавляйте новые карточки.</p>
+                
+                <div id="admin-items-list"></div>
+                
+                <h4 style="margin-top: 30px; margin-bottom: 12px;">Добавить новый товар</h4>
+                <input type="text" id="new-name" class="form-inp" placeholder="Название товара">
+                <input type="text" id="new-desc" class="form-inp" placeholder="Состав / Описание">
+                <input type="number" id="new-price" class="form-inp" placeholder="Цена (сом)">
+                <select id="new-cat" class="form-inp">
+                    <option value="rolls">Роллы</option>
+                    <option value="sets">Сеты</option>
+                    <option value="sushi">Суши</option>
+                    <option value="drinks">Напитки</option>
+                </select>
+                <input type="text" id="new-img" class="form-inp" placeholder="Ссылка на фото (URL)">
+                <button class="btn-add" style="width: 100%; padding: 13px; margin-top: 5px;" onclick="addNewItem()">Сохранить товар</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Корзина (Drawer) -->
+    <div class="drawer" id="cart-drawer">
+        <div class="drawer-box">
+            <div class="drawer-head">
+                <h3>Ваш заказ</h3>
+                <button class="close-btn" onclick="toggleCart()">&times;</button>
+            </div>
+
+            <div class="cart-list" id="cart-list"></div>
+
+            <div style="font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 20px;" id="cart-total">
+                Итого: 0 сом
+            </div>
+
+            <input type="text" id="order-name" class="form-inp" placeholder="Ваше имя">
+            <input type="tel" id="order-phone" class="form-inp" placeholder="Номер телефона">
+            <input type="text" id="order-address" class="form-inp" placeholder="Адрес доставки">
+
+            <button class="btn-send" onclick="sendOrder()">Отправить заказ в WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       7. JAVASCRIPT ЛОГИКА
+       ========================================================================== -->
+    <script>
+        // Данные меню по умолчанию
+        const defaultMenu = [
+            { id: 1, cat: "rolls", name: "Филадельфия Классик", desc: "Лосось, сливочный сыр, огурец, нори, рис", price: 450, img: "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400" },
+            { id: 2, cat: "rolls", name: "Калифорния с крабом", desc: "Снежный краб, авокадо, огурец, икра тобико", price: 390, img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" },
+            { id: 3, cat: "rolls", name: "Запеченный с угрём", desc: "Угорь, сыр, унаги соус, белый кунжут", price: 480, img: "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400" },
+            { id: 4, cat: "sets", name: "Сет Сакура", desc: "Филадельфия, Калифорния, Дракон (24 штуки)", price: 1250, img: "https://images.unsplash.com/photo-1615361200141-f45040f367be?w=400" },
+            { id: 5, cat: "sushi", name: "Суши с лососем", desc: "Свежий лосось, рис, васаби", price: 120, img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400" },
+            { id: 6, cat: "drinks", name: "Зеленый чай 0.5l", desc: "Холодный японский зеленый чай", price: 100, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400" }
+        ];
+
+        let currentCategory = 'all';
+
+        // Получение данных из LocalStorage
+        function getMenu() {
+            try {
+                const data = localStorage.getItem('sakura_menu');
+                return data ? JSON.parse(data) : defaultMenu;
+            } catch(e) {
+                return defaultMenu;
+            }
+        }
+
+        // Сохранение данных в LocalStorage
+        function saveMenu(menu) {
+            try {
+                localStorage.setItem('sakura_menu', JSON.stringify(menu));
+            } catch(e) {
+                alert('Не удалось сохранить изменения!');
+            }
+        }
+
+        let menu = getMenu();
+        let cart = {};
+
+        // Отрисовка каталога
+        function renderMenu() {
+            const grid = document.getElementById('menu-grid');
+            const filtered = currentCategory === 'all' 
+                ? menu 
+                : menu.filter(item => item.cat === currentCategory);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#888; padding: 40px 0;">В этой категории пока нет товаров.</p>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="card">
+                    <img src="${item.img || 'https://via.placeholder.com/300'}" class="card-img" alt="${item.name}">
+                    <div class="card-body">
+                        <div class="card-title">${item.name}</div>
+                        <div class="card-desc">${item.desc}</div>
+                        <div class="card-bottom">
+                            <span class="card-price">${item.price} сом</span>
+                            <button class="btn-add" onclick="addToCart(${item.id})">+ В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Фильтрация категорий
+        function filterCategory(cat, btn) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            renderMenu();
+        }
+
+        // Добавление в корзину
+        function addToCart(id) {
+            cart[id] = (cart[id] || 0) + 1;
+            updateCart();
+        }
+
+        // Изменение количества в корзине
+        function changeQty(id, delta) {
+            if (cart[id]) {
+                cart[id] += delta;
+                if (cart[id] <= 0) delete cart[id];
+            }
+            updateCart();
+        }
+
+        // Обновление состояния корзины
+        function updateCart() {
+            const count = Object.values(cart).reduce((a, b) => a + b, 0);
+            document.getElementById('cart-count').innerText = count;
+
+            const list = document.getElementById('cart-list');
+              let total = 0;
+
+            const itemsHtml = Object.keys(cart).map(id => {
+                const item = menu.find(m => m.id == id);
+                if (!item) return '';
+                const sum = item.price * cart[id];
+                total += sum;
+                return `
+                    <div class="cart-row">
+                        <div>
+                            <div><strong>${item.name}</strong></div>
+                            <small style="color:var(--text-muted);">${item.price} x ${cart[id]} = ${sum} сом</small>
+                        </div>
+                        <div class="qty-cnt">
+                            <button class="qty-btn" onclick="changeQty(${id}, -1)">-</button>
+                            <span>${cart[id]}</span>
+                            <button class="qty-btn" onclick="changeQty(${id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            list.innerHTML = itemsHtml || '<p style="color:#777; text-align:center; padding:20px 0;">Корзина пуста</p>';
+            document.getElementById('cart-total').innerText = `Итого: ${total} сом`;
+        }
+
+        // Открытие / Закрытие корзины
+        function toggleCart() {
+            document.getElementById('cart-drawer').classList.toggle('open');
+        }
+
+        // Открытие / Закрытие админки
+        function toggleAdmin() {
+            const panel = document.getElementById('admin-panel');
+            panel.classList.toggle('open');
+            if (panel.classList.contains('open')) renderAdminList();
+        }
+
+        // Отрисовка списка в админке
+        function renderAdminList() {
+            const list = document.getElementById('admin-items-list');
+            list.innerHTML = menu.map(item => `
+                <div class="admin-item-row">
+                    <img src="${item.img}" class="admin-item-thumb">
+                    <div class="admin-item-name">
+                        <strong>${item.name}</strong>
+                    </div>
+                    <input type="number" value="${item.price}" class="admin-item-price" onchange="updatePrice(${item.id}, this.value)">
+                    <button style="color:red; background:none; font-size:1.2rem;" onclick="deleteItem(${item.id})">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        // Обновление цены
+        function updatePrice(id, newPrice) {
+            const item = menu.find(m => m.id === id);
+            if (item) {
+                item.price = Number(newPrice);
+                saveMenu(menu);
+                renderMenu();
+            }
+        }
+
+        // Удаление товара
+        function deleteItem(id) {
+            menu = menu.filter(m => m.id !== id);
+            saveMenu(menu);
+            renderMenu();
+            renderAdminList();
+        }
+
+        // Добавление товара
+        function addNewItem() {
+            const name = document.getElementById('new-name').value.trim();
+            const desc = document.getElementById('new-desc').value.trim();
+            const price = Number(document.getElementById('new-price').value);
+            const cat = document.getElementById('new-cat').value;
+            const img = document.getElementById('new-img').value.trim();
+
+            if (!name || !price) {
+                alert('Укажите название и цену!');
+                return;
+            }
+
+            const newItem = {
+                id: Date.now(),
+                cat: cat || 'rolls',
+                name: name,
+                desc: desc || '',
+                price: price,
+                img: img || 'https://via.placeholder.com/300'
+            };
+
+            menu.push(newItem);
+            saveMenu(menu);
+            renderMenu();
+            renderAdminList();
+
+            document.getElementById('new-name').value = '';
+            document.getElementById('new-desc').value = '';
+            document.getElementById('new-price').value = '';
+            document.getElementById('new-img').value = '';
+        }
+
+        // Отправка заказа в WhatsApp
+        function sendOrder() {
+            const name = document.getElementById('order-name').value.trim();
+            const phone = document.getElementById('order-phone').value.trim();
+            const address = document.getElementById('order-address').value.trim();
+
+            if (Object.keys(cart).length === 0) {
+                alert('Корзина пуста!');
+                return;
+            }
+
+            if (!name || !phone || !address) {
+                alert('Заполните все поля доставки!');
+                return;
+            }
+
+            let text = `🌸 *Новый заказ Sakura Sushi*\n\n`;
+            text += `👤 *Имя:* ${name}\n📞 *Тел:* ${phone}\n📍 *Адрес:* ${address}\n\n🍣 *Заказ:*\n`;
+
+            let total = 0;
+            Object.keys(cart).forEach(id => {
+                const item = menu.find(m => m.id == id);
+                if (item) {
+                    const sum = item.price * cart[id];
+                    total += sum;
+                    text += `• ${item.name} (${cart[id]} шт) — ${sum} сом\n`;
+                }
+            });
+
+            text += `\n💰 *Итого к оплате:* ${total} сом`;
+
+            window.open(`https://wa.me/996775049798?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // Инициализация при загрузке
+        renderMenu();
+    </script>
+</body>
+</html>

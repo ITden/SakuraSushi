@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sakura Sushi — презентация проекта</title>
+<title>Sakura Sushi — заказать суши онлайн</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -190,14 +190,14 @@
     padding-bottom:36px; border-bottom:1px solid rgba(23,17,15,0.1);
   }
   .support-col h4{ font-size:1rem; margin-bottom:14px; color:var(--red); font-family:'Shippori Mincho', serif;}
-  .support-col p, .support-col a{ display:block; font-size:0.92rem; color:#3a332c; margin-bottom:6px;}
+  .support-col a{ display:block; font-size:0.92rem; color:#3a332c; margin-bottom:6px;}
   .foot-bottom{
     display:flex; justify-content:space-between; align-items:center; padding-top:20px;
     font-size:0.8rem; color:#7a7266; flex-wrap:wrap; gap:10px;
   }
   .admin-link{ color:#a3241c; cursor:pointer; text-decoration:underline; border:none; background:none;}
 
-  /* Overlay & Drawers / Modals */
+  /* Drawer & Overlay */
   .overlay{
     position:fixed; inset:0; background:rgba(23,17,15,0.65); z-index:80;
     opacity:0; pointer-events:none; transition:opacity .2s;
@@ -463,7 +463,7 @@
   <div class="modal-box">
     <button class="drawer-close" onclick="closeAdmin()">×</button>
     <h3 style="margin-bottom:16px;">Панель управления меню</h3>
-    <p style="font-size:0.85rem; color:#666; margin-bottom:20px;">Загрузите фото с устройства и измените цены. Изменения сохраняются в браузере.</p>
+    <p style="font-size:0.85rem; color:#666; margin-bottom:20px;">Загрузите фото с устройства и измените цены.</p>
     <div id="adminItemsList"></div>
   </div>
 </div>
@@ -471,7 +471,7 @@
 <script>
   const PHONE_NUMBER = "996775049798";
 
-  const defaultMenu = [
+  const initialMenu = [
     {
       category: "Нигири",
       items: [
@@ -493,6 +493,9 @@
       items: [
         { id: 7, name: "Sakura на двоих", desc: "24 шт, ассорти нигири и роллов", price: 2190, img: "" },
         { id: 8, name: "Обед", desc: "сет из 12 шт для одного", price: 690, img: "" },
-        { id: 9, name: "Вегетарианский", desc: "авокадо, огурец, тофу", price: 890, img: "" }
+        { id: 9, name: "Вегетарианский", desc: "авокадо, огурец, тофу, кампё", price: 890, img: "" }
       ]
-   
+    }
+  ];
+
+  let stored = localStorage.getItem('sakura

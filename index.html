@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakura Sushi — Доставка суши и роллов</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;800&family=Shippori+Mincho:wght@500;600;800&display=swap" rel="stylesheet">
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+        :root {
+            --ink: #17110f;
+            --paper: #faf8ef;
+            --dark: #181111;
+            --dark-2: #221515;
+            --red: #e3241c;
+            --red-deep: #7c1a14;
+            --line: rgba(250,248,239,0.14);
+            --line-dark: rgba(23,17,15,0.12);
+            --muted: #6c6662;
+            --card: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Noto Sans JP', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .brand {
+            font-family: 'Shippori Mincho', serif;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            outline: none;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+        }
+
+        .wrap {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 60;
+            background: rgba(24, 17, 17, 0.94);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .brand {
+            color: var(--paper);
+            font-size: 1.35rem;
+        }
+
+        .brand span {
+            color: var(--red);
+        }
+
+        .settings-btn {
+            background: transparent;
+            color: var(--paper);
+            border: 1px solid var(--line);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            transition: 0.2s;
+        }
+
+        .settings-btn:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ================= CART ================= */
+
+        .floating-cart {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 90;
+            background: var(--red);
+            color: var(--paper);
+            padding: 14px 22px;
+            border-radius: 50px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(227,36,28,0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .floating-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(227,36,28,0.5);
+        }
+
+        .cart-count {
+            background: var(--paper);
+            color: var(--red);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background: linear-gradient(
+                180deg,
+                var(--dark),
+                var(--dark-2) 75%
+            );
+
+            color: var(--paper);
+            padding: 120px 0 65px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--paper);
+        }
+
+        .hero p {
+            color: rgba(250,248,239,0.72);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-actions {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            padding: 11px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .hero-btn.primary {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .hero-btn.secondary {
+            background: transparent;
+            color: var(--paper);
+            border: 1px solid var(--line);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ================= MENU ================= */
+
+        section {
+            padding: 40px 0;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .cat-btn {
+            padding: 8px 16px;
+            background: #e8e5d8;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .cat-btn.active,
+        .cat-btn:hover {
+            background: var(--red);
+            color: white;
+        }
+
+        .sec-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fill,
+                minmax(260px, 1fr)
+            );
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition:
+                transform 0.22s,
+                box-shadow 0.22s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            background: #eee;
+            transition: transform 0.35s;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.025);
+        }
+
+        .card-body {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 14px;
+            flex: 1;
+        }
+
+        .card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .card-price {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--red-deep);
+        }
+
+        .btn-add {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .btn-add:hover {
+            background: var(--red);
+            transform: translateY(-1px);
+        }
+
+        /* ================= WHY US ================= */
+
+        .info-section {
+            padding: 10px 0 45px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .info-card {
+            background: #fff;
+            border: 1px solid var(--line-dark);
+            border-radius: 8px;
+            padding: 22px 18px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.025);
+            transition: 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .info-icon {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+        }
+
+        .info-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 5px;
+        }
+
+        .info-card p {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        /* ================= HOW TO ORDER ================= */
+
+        .steps-section {
+            padding: 5px 0 50px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .step {
+            position: relative;
+            text-align: center;
+            padding: 18px 10px;
+        }
+
+        .step-num {
+            margin: 0 auto 9px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--red);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .step h3 {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .step p {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 10px;
+            background: var(--dark);
+            color: var(--paper);
+            padding: 38px 0 24px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .footer-brand {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 1.35rem;
+            margin-bottom: 7px;
+        }
+
+        .footer-brand span {
+            color: var(--red);
+        }
+
+        .footer-text {
+            font-size: 0.82rem;
+            color: rgba(250,248,239,0.62);
+            max-width: 340px;
+        }
+
+        .footer-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .footer-link {
+            display: block;
+            font-size: 0.85rem;
+            color: rgba(250,248,239,0.78);
+            margin: 4px 0;
+            transition: 0.2s;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+        }
+
+        .support-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #25D366;
+            color: #fff;
+            padding: 9px 13px;
+            border-radius: 22px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+
+        .support-link:hover {
+            background: #1ebc57;
+            transform: translateY(-1px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--line);
+            margin-top: 25px;
+            padding-top: 16px;
+            font-size: 0.75rem;
+            color: rgba(250,248,239,0.48);
+        }
+
+        /* ================= CART DRAWER ================= */
+
+        .drawer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 100;
+            display: none;
+            justify-content: flex-end;
+        }
+
+        .drawer.open {
+            display: flex;
+        }
+
+        .drawer-box {
+            background: var(--paper);
+            width: 100%;
+            max-width: 440px;
+            height: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .drawer-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--line-dark);
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            font-size: 1.6rem;
+            line-height: 1;
+            color: var(--ink);
+        }
+
+        .cart-list {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line-dark);
+        }
+
+        .qty-cnt {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qty-btn {
+            background: #e0e0e0;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-inp {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background: #fff;
+        }
+
+        .btn-send {
+            background: #25D366;
+            color: white;
+            width: 100%;
+            padding: 13px;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 4px;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+
+        .btn-send:hover {
+            background: #1ebc57;
+        }
+
+        .btn-sec {
+            background: var(--ink);
+            color: white;
+            width: 100%;
+            padding: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        /* ================= SETTINGS ================= */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--paper);
+            width: 90%;
+            max-width: 480px;
+            border-radius: 8px;
+            padding: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* ================= ADMIN ================= */
+
+        .admin-panel {
+            background: #fff;
+            border: 1px solid var(--line-dark);
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .admin-panel.open {
+            display: block;
+        }
+
+        .admin-item-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line-dark);
+        }
+
+        .admin-item-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 3px;
+            object-fit: cover;
+            background: #ddd;
+        }
+
+        .admin-item-name {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .admin-item-price {
+            width: 85px;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            .hero h1 {
+                font-size: 2.15rem;
+            }
+
+            .hero {
+                padding: 105px 0 52px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .card-img {
+                height: 145px;
+            }
+
+            .card-body {
+                padding: 12px;
+            }
+
+            .card-title {
+                font-size: 0.98rem;
+            }
+
+            .card-desc {
+                font-size: 0.78rem;
+            }
+
+            .card-price {
+                font-size: 1rem;
+            }
+
+            .btn-add {
+                padding: 7px 9px;
+                font-size: 0.75rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .floating-cart {
+                right: 15px;
+                bottom: 15px;
+                padding: 12px 17px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .card-bottom {
+                align-items: flex-end;
+            }
+
+            .card-price {
+                font-size: 0.92rem;
+            }
+
+            .btn-add {
+                padding: 7px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+    <nav>
+
+        <a href="#" class="brand">
+            🌸 Sakura <span>Sushi</span>
+        </a>
+
+        <button class="settings-btn" onclick="openSettings()">
+            ⚙️ Настройки
+        </button>
+
+    </nav>
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<div class="hero">
+
+    <div class="wrap">
+
+        <h1>Sakura Sushi</h1>
+
+        <p>
+            Свежие ингредиенты, авторские рецепты и быстрая доставка.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#menu" class="hero-btn primary">
+                🍣 Смотреть меню
+            </a>
+
+            <a href="#how-to-order" class="hero-btn secondary">
+                Как заказать?
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MENU ================= -->
+
+<section id="menu">
+
+    <div class="wrap">
+
+        <div class="categories">
+
+            <button
+                class="cat-btn active"
+                onclick="filterCategory('all', this)"
+            >
+                Все
+            </button>
+
+            <button
+                class="cat-btn"
+                onclick="filterCategory('rolls', this)"
+            >
+                Роллы
+            </button>
+
+            <button
+                class="cat-btn"
+                onclick="filterCategory('sets', this)"
+            >
+                Сеты
+            </button>
+
+            <button
+                class="cat-btn"
+                onclick="filterCategory('sushi', this)"
+            >
+                Суши
+            </button>
+
+            <button
+                class="cat-btn"
+                onclick="filterCategory('drinks', this)"
+            >
+                Напитки
+            </button>
+
+        </div>
+
+
+        <h2 class="sec-title" id="sec-title">
+            Всё меню
+        </h2>
+
+        <div class="grid" id="menu-grid"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WHY SAKURA ================= -->
+
+<section class="info-section">
+
+    <div class="wrap">
+
+        <h2 class="sec-title"
+                  <div class="info-grid">
+
+            <div class="info-card">
+                <div class="info-icon">🍣</div>
+                <h3>Свежие продукты</h3>
+                <p>
+                    Используем качественные ингредиенты и готовим роллы
+                    непосредственно перед отправкой заказа.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">⚡</div>
+                <h3>Быстрая доставка</h3>
+                <p>
+                    Стараемся доставить заказ максимально быстро,
+                    чтобы вы получили его свежим и вкусным.
+                </p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-icon">🌸</div>
+                <h3>С любовью к деталям</h3>
+                <p>
+                    Sakura Sushi — это аккуратная подача, приятный дизайн
+                    и внимание к каждому заказу.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta-section">
+    <div class="wrap">
+        <div class="cta-box">
+            <div>
+                <div class="cta-kicker">SAKURA SUSHI</div>
+                <h2>Готовы сделать заказ?</h2>
+                <p>
+                    Выберите любимые роллы, добавьте их в корзину
+                    и оформите доставку через WhatsApp.
+                </p>
+            </div>
+
+            <button class="cta-btn" onclick="toggleCart()">
+                🛒 Открыть корзину
+            </button>
+        </div>
+    </div>
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="site-footer">
+
+    <div class="wrap">
+
+        <div class="footer-grid">
+
+            <div>
+                <div class="footer-brand">
+                    🌸 Sakura <span>Sushi</span>
+                </div>
+
+                <p class="footer-text">
+                    Свежие суши и роллы с доставкой.
+                    Заказывайте быстро и удобно.
+                </p>
+            </div>
+
+            <div class="footer-block">
+                <h4>Контакты</h4>
+
+                <a href="https://wa.me/996775049798"
+                   target="_blank"
+                   rel="noopener">
+                    WhatsApp
+                </a>
+
+                <a href="tel:+996775049798">
+                    +996 775 049 798
+                </a>
+            </div>
+
+            <div class="footer-block">
+                <h4>Навигация</h4>
+
+                <a href="#" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">
+                    Главная
+                </a>
+
+                <a href="#menu">
+                    Меню
+                </a>
+
+                <button onclick="openSettings()">
+                    ⚙️ Настройки
+                </button>
+            </div>
+
+        </div>
+
+
+        <!-- Поддержка внизу страницы -->
+        <div class="footer-support">
+
+            <div>
+                <strong>Нужна помощь?</strong>
+                <span>Свяжитесь с нами в WhatsApp</span>
+            </div>
+
+            <a href="https://wa.me/996775049798"
+               target="_blank"
+               rel="noopener">
+                💬 Написать в WhatsApp
+            </a>
+
+        </div>
+
+
+        <div class="footer-bottom">
+            <span>© 2026 Sakura Sushi</span>
+            <span>Сделано для портфолио</span>
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+    const defaultMenu = [
+        {
+            id: 1,
+            cat: "rolls",
+            name: "Филадельфия Классик",
+            desc: "Лосось, сливочный сыр, огурец, нори",
+            price: 450,
+            img: "https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=600"
+        },
+        {
+            id: 2,
+            cat: "rolls",
+            name: "Калифорния с крабом",
+            desc: "Снежный краб, авокадо, огурец, икра тобико",
+            price: 390,
+            img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600"
+        },
+        {
+            id: 3,
+            cat: "rolls",
+            name: "Запеченный с угрём",
+            desc: "Угорь, сыр, унаги соус, кунжут",
+            price: 480,
+            img: "https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600"
+        },
+        {
+            id: 4,
+            cat: "sets",
+            name: "Сет Сакура",
+            desc: "Филадельфия, Калифорния, Дракон — 24 шт",
+            price: 1250,
+            img: "https://images.unsplash.com/photo-1615361200141-f45040f367be?w=600"
+        },
+        {
+            id: 5,
+            cat: "sushi",
+            name: "Суши с лососем",
+            desc: "Свежий лосось, рис, васаби",
+            price: 120,
+            img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600"
+        }
+    ];
+
+
+    let currentCategory = "all";
+
+
+    function getMenu() {
+
+        try {
+
+            const data = localStorage.getItem("sakura_menu");
+
+            return data
+                ? JSON.parse(data)
+                : defaultMenu;
+
+        } catch (e) {
+
+            return defaultMenu;
+
+        }
+
+    }
+
+
+    function saveMenu(menu) {
+
+        try {
+
+            localStorage.setItem(
+                "sakura_menu",
+                JSON.stringify(menu)
+            );
+
+        } catch (e) {
+
+            alert("Ошибка сохранения меню");
+
+        }
+
+    }
+
+
+    let menu = getMenu();
+
+    let cart = {};
+
+    let currentUser =
+        localStorage.getItem("sakura_user") || null;
+
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function renderMenu() {
+
+        const grid =
+            document.getElementById("menu-grid");
+
+        const filtered =
+            currentCategory === "all"
+                ? menu
+                : menu.filter(
+                    item => item.cat === currentCategory
+                );
+
+
+        if (filtered.length === 0) {
+
+            grid.innerHTML = `
+                <p style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    color:#888;
+                    padding:40px 0;
+                ">
+                    В этой категории пока нет товаров.
+                </p>
+            `;
+
+            return;
+
+        }
+
+
+        grid.innerHTML = filtered.map(item => `
+
+            <div class="card">
+
+                <img
+                    src="${escapeHtml(
+                        item.img ||
+                        "https://via.placeholder.com/300"
+                    )}"
+                    class="card-img"
+                    alt="${escapeHtml(item.name)}"
+                    loading="lazy"
+                >
+
+                <div class="card-body">
+
+                    <div class="card-title">
+                        ${escapeHtml(item.name)}
+                    </div>
+
+                    <div class="card-desc">
+                        ${escapeHtml(item.desc || "")}
+                    </div>
+
+                    <div class="card-bottom">
+
+                        <span class="card-price">
+                            ${item.price} сом
+                        </span>
+
+                        <button
+                            class="btn-add"
+                            onclick="addToCart(${item.id})"
+                        >
+                            + В корзину
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+    }
+
+
+    function filterCategory(cat, btn) {
+
+        currentCategory = cat;
+
+        document
+            .querySelectorAll(".cat-btn")
+            .forEach(
+                b => b.classList.remove("active")
+            );
+
+        if (btn) {
+
+            btn.classList.add("active");
+
+        }
+
+        renderMenu();
+
+    }
+
+
+    function addToCart(id) {
+
+        cart[id] =
+            (cart[id] || 0) + 1;
+
+        updateCart();
+
+    }
+
+
+    function changeQty(id, delta) {
+
+        if (cart[id]) {
+
+            cart[id] += delta;
+
+            if (cart[id] <= 0) {
+
+                delete cart[id];
+
+            }
+
+        }
+
+        updateCart();
+
+    }
+
+
+    function updateCart() {
+
+        const count =
+            Object.values(cart)
+                .reduce(
+                    (a, b) => a + b,
+                    0
+                );
+
+
+        document
+            .getElementById("cart-count")
+            .innerText = count;
+
+
+        const list =
+            document.getElementById("cart-list");
+
+
+        let total = 0;
+
+
+        const itemsHtml =
+            Object.keys(cart)
+                .map(id => {
+
+                    const item =
+                        menu.find(
+                            m => m.id == id
+                        );
+
+
+                    if (!item) return "";
+
+
+                    const sum =
+                        item.price * cart[id];
+
+
+                    total += sum;
+
+
+                    return `
+
+                        <div class="cart-row">
+
+                            <div>
+
+                                <div>
+                                    <strong>
+                                        ${escapeHtml(item.name)}
+                                    </strong>
+                                </div>
+
+                                <small>
+                                    ${item.price} × ${cart[id]}
+                                    = ${sum} сом
+                                </small>
+
+                            </div>
+
+
+                            <div class="qty-cnt">
+
+                                <button
+                                    class="qty-btn"
+                                    onclick="changeQty(${id}, -1)"
+                                >
+                                    −
+                                </button>
+
+                                <span>
+                                    ${cart[id]}
+                                </span>
+
+                                <button
+                                    class="qty-btn"
+                                    onclick="changeQty(${id}, 1)"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                })
+                .join("");
+
+
+        list.innerHTML =
+            itemsHtml ||
+            `
+                <p style="
+                    color:#777;
+                    text-align:center;
+                    padding:30px 0;
+                ">
+                    Корзина пуста
+                </p>
+            `;
+
+
+        document
+            .getElementById("cart-total")
+            .innerText =
+                `Итого: ${total} сом`;
+
+    }
+
+
+    function toggleCart() {
+
+        const drawer =
+            document.getElementById("cart-drawer");
+
+        drawer.classList.toggle("open");
+
+        document.body.style.overflow =
+            drawer.classList.contains("open")
+                ? "hidden"
+                : "";
+
+    }
+
+
+    /* ================= SETTINGS ================= */
+
+
+    function openSettings() {
+
+        document
+            .getElementById("settings-modal")
+            .classList.add("open");
+
+        document.body.style.overflow = "hidden";
+
+        updateUserUI();
+
+    }
+
+
+    function closeSettings() {
+
+        document
+            .getElementById("settings-modal")
+            .classList.remove("open");
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    function registerPhone() {
+
+        const phone =
+            document
+                .getElementById("user-phone-input")
+                .value
+                .trim();
+
+
+        if (!phone) {
+
+            alert(
+                "Введите номер телефона!"
+            );
+
+            return;
+
+        }
+
+
+        currentUser = phone;
+
+
+        localStorage.setItem(
+            "sakura_user",
+            currentUser
+        );
+
+
+        updateUserUI();
+
+
+        alert(
+            "Вы успешно зарегистрировались!"
+        );
+
+    }
+
+
+    /* ================= GOOGLE AUTH ================= */
+
+
+    function handleCredentialResponse(response) {
+
+        try {
+
+            const base64Url =
+                response.credential.split(".")[1];
+
+
+            const base64 =
+                base64Url
+                    .replace(/-/g, "+")
+                    .replace(/_/g, "/");
+
+
+            const jsonPayload =
+                decodeURIComponent(
+                    atob(base64)
+                        .split("")
+                        .map(function(c) {
+
+                            return "%" +
+                                (
+                                    "00" +
+                                    c.charCodeAt(0)
+                                        .toString(16)
+                                ).slice(-2);
+
+                        })
+                        .join("")
+                );
+
+
+            const userData =
+                JSON.parse(jsonPayload);
+
+
+            currentUser =
+                userData.name +
+                " (" +
+                userData.email +
+                ")";
+
+
+            localStorage.setItem(
+                "sakura_user",
+                currentUser
+            );
+
+
+            updateUserUI();
+
+
+        } catch (error) {
+
+            alert(
+                "Не удалось выполнить вход через Google."
+            );
+
+        }
+
+    }
+
+
+    function updateUserUI() {
+
+        const el =
+            document.getElementById("user-info");
+
+
+        if (currentUser) {
+
+            el.innerHTML = `
+                Вы вошли как:
+                <strong style="color:green;">
+                    ${escapeHtml(currentUser)}
+                </strong>
+            `;
+
+        } else {
+
+            el.innerText =
+                "Статус: Вы не зарегистрированы";
+
+        }
+
+    }
+
+
+    /* ================= ADMIN ================= */
+
+
+    function loginAdmin() {
+
+        const login =
+            document
+                .getElementById("admin-login")
+                .value
+                .trim();
+
+
+        const pass =
+            document
+                .getElementById("admin-pass")
+                .value
+                .trim();
+
+
+        if (
+            login === "admin" &&
+            pass === "1234"
+        ) {
+
+            document
+                .getElementById(
+                    "admin-auth-form"
+                )
+                .style.display = "none";
+
+
+            const panel =
+                document.getElementById(
+                    "admin-panel"
+                );
+
+
+            panel.classList.add("open");
+
+
+            renderAdminList();
+
+        } else {
+
+            alert(
+                "Неверный логин или пароль!"
+            );
+
+        }
+
+    }
+
+
+    function renderAdminList() {
+
+        const list =
+            document.getElementById(
+                "admin-items-list"
+            );
+
+
+        list.innerHTML =
+            menu.map(item => `
+
+                <div class="admin-item-row">
+
+                    <img
+                        src="${escapeHtml(item.img)}"
+                        class="admin-item-thumb"
+                        alt=""
+                    >
+
+                    <div class="admin-item-name">
+
+                        <strong>
+                            ${escapeHtml(item.name)}
+                        </strong>
+
+                    </div>
+
+                    <input
+                        type="number"
+                        value="${item.price}"
+                        class="admin-item-price"
+                        onchange="
+                            updatePrice(
+                                ${item.id},
+                                this.value
+                            )
+                        "
+                    >
+
+                    <button
+                        style="
+                            color:red;
+                            background:none;
+                            font-size:1.2rem;
+                        "
+                        onclick="
+                            deleteItem(${item.id})
+                        "
+                    >
+                        🗑️
+                    </button>
+
+                </div>
+
+            `).join("");
+
+    }
+
+
+    function updatePrice(id, newPrice) {
+
+        const item =
+            menu.find(
+                m => m.id === id
+            );
+
+
+        if (item) {
+
+            item.price =
+                Number(newPrice);
+
+
+            saveMenu(menu);
+
+            renderMenu();
+
+        }
+
+    }
+
+
+    function deleteItem(id) {
+
+        menu =
+            menu.filter(
+                m => m.id !== id
+            );
+
+
+        saveMenu(menu);
+
+        renderMenu();
+
+        renderAdminList();
+
+    }
+
+
+    function addNewItem() {
+
+        const name =
+            document
+                .getElementById("new-name")
+                .value
+                .trim();
+
+
+        const desc =
+            document
+                .getElementById("new-desc")
+                .value
+                .trim();
+
+
+        const price =
+            Number(
+                document
+                    .getElementById("new-price")
+                    .value
+            );
+
+
+        const cat =
+            document
+                .getElementById("new-cat")
+                .value;
+
+
+        const img =
+            document
+                .getElementById("new-img")
+                .value
+                .trim();
+
+
+        if (!name || !price) {
+
+            alert(
+                "Укажите название и цену!"
+            );
+
+            return;
+
+        }
+
+
+        const newItem = {
+
+            id: Date.now(),
+
+            cat: cat || "rolls",
+
+            name: name,
+
+            desc: desc || "",
+
+            price: price,
+
+            img:
+                img ||
+                "https://via.placeholder.com/300"
+
+        };
+
+
+        menu.push(newItem);
+
+        saveMenu(menu);
+
+        renderMenu();
+
+        renderAdminList();
+
+
+        document
+            .getElementById("new-name")
+            .value = "";
+
+
+        document
+            .getElementById("new-desc")
+            .value = "";
+
+
+        document
+            .getElementById("new-price")
+            .value = "";
+
+
+        document
+            .getElementById("new-img")
+            .value = "";
+
+    }
+
+
+    /* ================= ORDER ================= */
+
+
+    function sendOrder() {
+
+        if (!currentUser) {
+
+            alert(
+                "Пожалуйста, пройдите регистрацию " +
+                "в Настройках перед оформлением заказа!"
+            );
+
+            openSettings();
+
+            return;
+
+        }
+
+
+        if (
+            Object.keys(cart).length === 0
+        ) {
+
+            alert(
+                "Корзина пуста!"
+            );
+
+            return;
+
+        }
+
+
+        const address =
+            document
+                .getElementById(
+                    "order-address"
+                )
+                .value
+                .trim();
+
+
+        if (!address) {
+
+            alert(
+                "Укажите адрес доставки!"
+            );
+
+            return;
+
+        }
+
+
+        let text =
+            `🌸 *Новый заказ Sakura Sushi*\n\n`;
+
+
+        text +=
+            `👤 *Аккаунт:* ${currentUser}\n`;
+
+
+        text +=
+            `📍 *Адрес:* ${address}\n\n`;
+
+
+        text +=
+            `🍣 *Заказ:*\n`;
+
+
+        let total = 0;
+
+
+        Object.keys(cart)
+            .forEach(id => {
+
+                const item =
+                    menu.find(
+                        m => m.id == id
+                    );
+
+
+                if (item) {
+
+                    const sum =
+                        item.price * cart[id];
+
+
+                    total += sum;
+
+              text +=
+
++
+
+`• ${item.name}
+
+`(${cart[id]} wT) -
+
+`${sum} coM\n;
+text +=
+
+`\n *MToro:* ${total} com`;
+
+window.open(
+
+`https://wa.me/996775049798?text=${ encodeURIComponent(text)
+
+},
+
+" blank"
+
+cart = {};
+
+document
+
+.getElementById(
+
+"order-address"
+
+)
+
+.value
+
+updateCart();
+
+toggleCart();
+
+alert(
+
+"Заказ подготовлен и открыт в WhatsApp!"
+
+);
+
+  }
+  document
+
+OVERLAYS
+
+.getElementById("cart-drawer") .addEventListener( "click",
+
+function(e) {
+
+);
+
+if (
+
+e.target === this
+
+toggleCart();
+
+document
+
+.getElementById("settings-modal")
+
+.addEventListener(
+
+"click",
+
+function(e)
+
+{
+
+);
+
+if
+
+e.target === this
+
+closeSettings();
+
+document.addEventListener( "keydown", function(e) {
+
+if (e.key === "Escape") {
+
+const drawer
+
+document.getElementById( "cart-drawer"
+
+);
+
+const modal
+
+=
+  document.getElementById( "settings-modal"
+
+if (
+
+drawer.classList.contains("open") ) { toggleCart();
+
+}
+
+if
+
+modal.classList.contains("open")
+
+) {
+
+closeSettings();
+
+/* =================
+
+renderMenu();
+
+updateCart();
+
+updateUserUI();
+
+</script>
+
+</body>
+
+</html>
